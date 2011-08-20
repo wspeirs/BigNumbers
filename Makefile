@@ -4,7 +4,7 @@ FLAGS = -W -Wall -pedantic -g -O3 -Weffc++ -Wctor-dtor-privacy -Wold-style-cast 
 LIBS  =
 EXEC  = BigNumbers
 
-all: Integer.o main.o
+all: main.o Integer.o 
 	$(GPP) $(FLAGS) *.o -o $(EXEC) $(LIBS) 
 
 main.o: main.cxx Integer.h
