@@ -19,11 +19,15 @@
 
 int main()
 {
-    Integer a;
-    Integer b;
-    Integer c;
+    Integer a(1);
+    Integer b(2);
+    Integer c(3);
 
     c = a + b;
+    c = a + 2;
+
+    c = a - b;
+    c = a - 2;
 
     return 0;
 }

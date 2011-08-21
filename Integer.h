@@ -32,21 +32,46 @@ typedef block_t::const_iterator block_const_it;
 typedef block_t::iterator block_it;
 
 class Integer {
+private:
     vector<ulong> blocks;
-    char sign; ///< The sign of the integer: 1 = positive, -1 = negative
+    mutable char sign; ///< The sign of the integer: 1 = positive, -1 = negative
 
-    public: Integer() : blocks(), sign(0) { }
+    //
+    // Internal functions
+    //
+    Integer add(const Integer &a, const Integer &b);
+    Integer sub(const Integer &a, const Integer &b);
+    
+public:
+    Integer() : blocks(), sign(0) { }
+    Integer(const ulong arg) : blocks(), sign(1)
+    { blocks.push_back(arg); }
+
 
     // Comparision functions
-//    public: bool operator==(const Integer &rhs) const;
-    public: bool operator==(ulong rhs) const;
+    bool operator==(const Integer &b) const
+    { return this->cmp(b) == 0; }
 
-    // Addition functions
-    private: Integer add(const Integer &a, const Integer &b);
-    public: Integer operator+(const Integer &b);
+    bool operator<(const Integer &b) const
+    { return this->cmp(b) < 0; }
 
-//    Integer operator+(const uint a, const Integer &b);
-//    Integer operator+(const Integer &a, const uint b);
+    bool operator>(const Integer &b) const
+    { return this->cmp(b) > 0; }
+
+    bool operator<=(const Integer &b) const
+    { return this->cmp(b) <= 0; }
+    
+    bool operator>=(const Integer &b) const
+    { return this->cmp(b) >= 0; }
+    
+    int cmp(const Integer &b) const;
+    int cmp_abs(const Integer &b) const;
+
+
+    // Arithmetic functions
+    Integer operator+(const Integer &b);
+    Integer operator-(const Integer &b);
+
 };
 
 #endif
