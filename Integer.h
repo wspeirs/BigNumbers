@@ -20,10 +20,12 @@
 
 #include <vector>
 #include <algorithm>
+#include <string>
 
 #include <sys/types.h>
 
 using std::vector;
+using std::string;
 using std::min;
 using std::max;
 
@@ -46,6 +48,8 @@ public:
     Integer() : blocks(), sign(0) { }
     Integer(const ulong arg) : blocks(), sign(1)
     { blocks.push_back(arg); }
+    Integer(const string &hex);
+
 
 
     // Comparision functions

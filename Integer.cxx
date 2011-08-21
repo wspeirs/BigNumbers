@@ -17,6 +17,52 @@
 
 #include "Integer.h"
 
+#include <stdio.h>
+
+Integer::Integer(const string &hex) : blocks(), sign(0)
+{
+    string::const_iterator it = hex.begin();
+
+    if(*it == '-')
+    {
+        sign = -1;
+        ++it;
+    }
+
+    else
+        sign = 1;
+
+    if(*it == '0' && *(it+1) == 'x')
+        it += 2;
+
+    size_t len = hex.end() - it;
+    size_t size = len/8 + (len%8 == 0 ? 0 : 1);
+    int i = size - 1;
+
+    blocks.resize(size);
+
+    if(len%8 != 0)
+    {
+        char format[5];
+
+        sprintf(format, "%%0%dX", len%8);
+        sscanf(hex.substr(it-hex.begin()).c_str(), format, &(blocks[size-1]));
+
+        it += len%8;
+        --i;
+    }
+
+
+    for( ; i >= 0; --i)
+    {
+        sscanf(hex.substr(it-hex.begin()).c_str(), "%08X", &(blocks[i]));
+
+        it += 8;
+    }
+
+    // might need a resize here
+}
+
 int Integer::cmp(const Integer &b) const
 {
     if(sign == b.sign)
