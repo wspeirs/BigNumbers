@@ -1,17 +1,58 @@
-GPP   = /usr/bin/g++
-GCC   = /usr/bin/gcc
-FLAGS = -W -Wall -pedantic -g -O3 -Weffc++ -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual
-LIBS  =
-EXEC  = BigNumbers
+GPP     = g++
+GCC     = gcc
+FLAGS   = -W -Wall -g
+LIBS    = -lgmp
+INCLUDE = -I.
+EXEC    = test
 
-all: main.o Integer.o 
-	$(GPP) $(FLAGS) *.o -o $(EXEC) $(LIBS) 
+all:	*.h \
+	main.o \
+	bignum_arith_ui.o \
+	bignum_assign.o \
+	bignum_cmp.o \
+	bignum_arith.o \
+	bignum_bit.o \
+	bignum_mod_arith.o \
+	bignum_num_theory.o
+	$(GPP) $(INCLUDE) $(FLAGS) *.o -o $(EXEC) $(LIBS)
 
-main.o: main.cxx Integer.h
-	$(GPP) -c $(FLAGS) main.cxx
+calc:	*.h \
+	calc.o \
+	bignum_arith_ui.o \
+	bignum_assign.o \
+	bignum_cmp.o \
+	bignum_arith.o \
+	bignum_bit.o \
+	bignum_mod_arith.o \
+	bignum_num_theory.o
+	$(GPP) $(INCLUDE) $(FLAGS) *.o -o calc $(LIBS)
 
-Integer.o: Integer.cxx Integer.h
-	$(GPP) -c $(FLAGS) Integer.cxx
+calc.o: calc.c /usr/include/gmp.h *.h
+	$(GCC) -c $(INCLUDE) $(FLAGS) calc.c
+
+main.o: main.c *.h
+	$(GCC) -c $(INCLUDE) $(FLAGS) main.c
+
+bignum_num_theory.o: bignum_num_theory.c *.h
+	$(GCC) -c $(INCLUDE) $(FLAGS) bignum_num_theory.c
+
+bignum_mod_arith.o: bignum_mod_arith.c *.h
+	$(GCC) -c $(INCLUDE) $(FLAGS) bignum_mod_arith.c
+
+bignum_bit.o: bignum_bit.c *.h
+	$(GCC) -c $(INCLUDE) $(FLAGS) bignum_bit.c
+	
+bignum_arith_ui.o: bignum_arith_ui.c *.h
+	$(GCC) -c $(INCLUDE) $(FLAGS) bignum_arith_ui.c
+
+bignum_assign.o: bignum_assign.c *.h
+	$(GCC) -c $(INCLUDE) $(FLAGS) bignum_assign.c
+
+bignum_cmp.o: bignum_cmp.c *.h
+	$(GCC) -c $(INCLUDE) $(FLAGS) bignum_cmp.c
+
+bignum_arith.o: bignum_arith.c *.h
+	$(GCC) -c $(INCLUDE) $(FLAGS) bignum_arith.c
 
 clean:
-	rm *~ *.o $(EXEC)
+	rm *~ *.o $(EXEC) calc
